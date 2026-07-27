@@ -1,0 +1,29 @@
+name: ARM64 lineage benchmark
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    name: ARM64 optimized traversal
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run benchmark
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lineageshield-arm64-benchmark
+          path: artifacts/benchmark.json
+          if-no-files-found: error
