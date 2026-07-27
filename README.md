@@ -108,6 +108,16 @@ Every push runs the benchmark on GitHub's native `ubuntu-24.04-arm` runner. The 
 
 Workflow: `.github/workflows/arm64-benchmark.yml`
 
+### Verified ARM64 result
+
+[GitHub Actions run #30307695875](https://github.com/nexicturbo/lineageshield/actions/runs/30307695875) completed successfully on native ARM64 Linux:
+
+| Graph | Baseline median | CSR median | Speedup | Parity |
+| --- | ---: | ---: | ---: | --- |
+| 3,000 nodes / 8,997 edges | 138.203 ms | 0.070 ms | **1,963.94×** | 2,819 = 2,819 ✓ |
+
+The workflow artifact records the architecture, Node version, full samples, graph shape, and result parity.
+
 ## Project structure
 
 ```text

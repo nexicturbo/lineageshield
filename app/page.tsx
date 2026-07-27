@@ -389,6 +389,33 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <a
+          className="benchmark-proof"
+          href="https://github.com/nexicturbo/lineageshield/actions/runs/30307695875"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <div>
+            <span>NATIVE ARM64 · VERIFIED</span>
+            <b>1,963.94×</b>
+            <small>faster median traversal</small>
+          </div>
+          <div>
+            <span>BASELINE</span>
+            <b>138.203 ms</b>
+            <small>repeated edge scans</small>
+          </div>
+          <div>
+            <span>OPTIMIZED</span>
+            <b>0.070 ms</b>
+            <small>CSR typed-array index</small>
+          </div>
+          <div>
+            <span>EXACT PARITY</span>
+            <b>2,819 = 2,819</b>
+            <small>reachable assets · view run ↗</small>
+          </div>
+        </a>
       </section>
 
       <footer>
