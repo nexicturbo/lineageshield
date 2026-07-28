@@ -30,9 +30,10 @@ test("server-renders the LineageShield product", async () => {
   const html = await response.text();
   assert.match(html, /<title>LineageShield/);
   assert.match(html, /Ship schema changes/);
-  assert.match(html, /DataHub/);
+  assert.match(html, /DataHub MCP/);
   assert.match(html, /Analyze change/);
   assert.match(html, /Safe rollout plan/i);
+  assert.match(html, /examples\/mcp\/lineageshield-mcp-context\.json/);
   assert.doesNotMatch(html, /codex-preview/);
   assert.doesNotMatch(html, /react-loading-skeleton/);
 });

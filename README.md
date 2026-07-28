@@ -10,7 +10,7 @@ LineageShield is a context-graph agent that turns a proposed schema change into:
 - a phased, merge-ready rollout plan; and
 - compatibility SQL tailored to the proposed change.
 
-The agent grounds every recommendation in DataHub lineage, ownership, tags, tiers, and schema metadata. The hosted demo ships with a representative DataHub snapshot so it is immediately testable; the included exporter connects the same engine to any DataHub Cloud or Core instance.
+The agent grounds every recommendation in DataHub lineage, ownership, tags, tiers, and schema metadata. Its primary integration calls the official DataHub MCP server; the hosted demo ships with a representative recorded context so it is immediately testable without credentials.
 
 ## Why it exists
 
@@ -35,31 +35,55 @@ The demo includes three reproducible scenarios:
 
 Each scenario runs the real traversal, risk, ownership, rollout, and guardrail logic in `lib/lineage.ts`.
 
-## Connect DataHub
+## Connect DataHub through MCP
 
-Install the official SDK:
+LineageShield uses the official [DataHub MCP server](https://github.com/acryldata/mcp-server-datahub) over Streamable HTTP. Its read-only context pipeline calls:
+
+1. `search` to resolve the changed dataset;
+2. `get_entities` for ownership, tags, tiers, and entity properties;
+3. `list_schema_fields` for the affected contract; and
+4. `get_lineage` with `upstream: false` and three hops for the downstream blast radius.
+
+Install the official MCP Python SDK and HTTP client:
+
+```bash
+python -m pip install "mcp>=1.27,<2" httpx
+```
+
+Collect a live, auditable context trace:
+
+```bash
+export DATAHUB_MCP_URL="https://your-tenant.acryl.io/integrations/ai/mcp/"
+export DATAHUB_MCP_TOKEN="your-personal-access-token"
+python scripts/datahub_mcp_context.py \
+  --query "customer email" \
+  --target-urn "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)" \
+  --output examples/mcp/context.json
+```
+
+The output preserves every tool name, argument, and response used by the agent while excluding the access token. `--target-urn` is optional; without it, the first matching search result is used.
+
+Run the complete pipeline without credentials using the committed MCP fixture:
+
+```bash
+python scripts/datahub_mcp_context.py \
+  --fixture examples/mcp/customer-email-change.fixture.json \
+  --query "customer email" \
+  --output examples/mcp/lineageshield-mcp-context.json
+```
+
+Inspect the [reproducible four-call MCP trace](examples/mcp/lineageshield-mcp-context.json), [generated compatibility SQL](examples/output/customer-contact-safe.sql), and [owner-aware rollout plan](examples/output/privacy-rollout.md).
+
+### Direct SDK fallback
+
+For DataHub Core deployments that have not enabled MCP, the read-only SDK exporter remains available:
 
 ```bash
 python -m pip install acryl-datahub
-```
-
-Export a read-only snapshot:
-
-```bash
 export DATAHUB_GMS_URL="https://your-tenant.acryl.io/gms"
 export DATAHUB_GMS_TOKEN="your-personal-access-token"
 python scripts/datahub_snapshot.py --output data/datahub-snapshot.json
 ```
-
-The exporter:
-
-- discovers datasets, dashboards, charts, and ML models with DataHub's graph client;
-- reads `datasetProperties`, dashboard/model properties, ownership, global tags, schema metadata, and upstream lineage;
-- normalizes those aspects into LineageShield's small, auditable snapshot format;
-- records partial-export errors instead of hiding them; and
-- never writes the DataHub access token to disk.
-
-The script is intentionally read-only. It uses `get_urns_by_filter` and `get_entity_raw`, which work with DataHub Cloud and current DataHub Core Graph APIs.
 
 ## How the agent works
 
@@ -67,8 +91,8 @@ The script is intentionally read-only. It uses `get_urns_by_filter` and `get_ent
 Proposed contract diff
         │
         ▼
-DataHub metadata snapshot
-  lineage · schema · owners · tags · tiers
+DataHub MCP context
+  search · entities · schema · lineage
         │
         ▼
 Typed adjacency index + downstream traversal
@@ -124,7 +148,10 @@ The workflow artifact records the architecture, Node version, full samples, grap
 app/                         interactive product experience
 data/sample-snapshot.ts      DataHub-style demo metadata
 lib/lineage.ts               traversal, risk, and rollout engine
+scripts/datahub_mcp_context.py official DataHub MCP context collector
 scripts/datahub_snapshot.py  production DataHub snapshot exporter
+examples/mcp/                reproducible MCP fixture and call trace
+examples/output/             generated SQL and rollout evidence
 bench/lineage-benchmark.mjs  baseline vs typed-array benchmark
 .github/workflows/           native ARM64 verification
 tests/                       rendered product checks
@@ -140,7 +167,8 @@ npm run benchmark
 
 ## Privacy and security
 
-- DataHub tokens are accepted only by the local exporter.
+- DataHub tokens are accepted only by local integration scripts.
+- The MCP trace records tool inputs and responses but never the bearer token.
 - The hosted demo does not request or store credentials.
 - Snapshots contain metadata, not table rows.
 - The repository contains no generated or embedded secrets.

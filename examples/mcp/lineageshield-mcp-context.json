@@ -1,0 +1,359 @@
+{
+  "format": "lineageshield-datahub-mcp-context-v1",
+  "source": {
+    "transport": "fixture",
+    "fixture": "examples/mcp/customer-email-change.fixture.json",
+    "server": "fixture://datahub-mcp"
+  },
+  "query": "/q customer+email",
+  "targetUrn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)",
+  "toolCalls": [
+    {
+      "name": "search",
+      "arguments": {
+        "query": "/q customer+email",
+        "num_results": 10
+      },
+      "result": {
+        "start": 0,
+        "count": 1,
+        "total": 1,
+        "searchResults": [
+          {
+            "entity": {
+              "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)",
+              "type": "DATASET",
+              "name": "customers",
+              "platform": "snowflake"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "get_entities",
+      "arguments": {
+        "urns": [
+          "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)"
+        ]
+      },
+      "result": [
+        {
+          "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)",
+          "type": "DATASET",
+          "name": "customers",
+          "description": "Canonical customer identity and contact profile.",
+          "ownership": {
+            "owners": [
+              {
+                "owner": {
+                  "urn": "urn:li:corpGroup:customer-platform",
+                  "name": "Customer Platform"
+                }
+              }
+            ]
+          },
+          "globalTags": {
+            "tags": [
+              {
+                "tag": {
+                  "urn": "urn:li:tag:PII",
+                  "properties": {
+                    "name": "PII"
+                  }
+                }
+              },
+              {
+                "tag": {
+                  "urn": "urn:li:tag:Tier1",
+                  "properties": {
+                    "name": "Tier1"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "list_schema_fields",
+      "arguments": {
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)",
+        "keywords": [
+          "customer",
+          "email"
+        ],
+        "limit": 100,
+        "offset": 0
+      },
+      "result": {
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)",
+        "fields": [
+          {
+            "fieldPath": "customer_id",
+            "nativeDataType": "VARCHAR",
+            "description": "Stable customer identifier."
+          },
+          {
+            "fieldPath": "email",
+            "nativeDataType": "VARCHAR",
+            "description": "Plaintext contact email classified as PII."
+          },
+          {
+            "fieldPath": "email_sha256",
+            "nativeDataType": "VARCHAR",
+            "description": "Normalized SHA-256 compatibility field."
+          }
+        ],
+        "totalFields": 14,
+        "returned": 3,
+        "remainingCount": 11,
+        "matchingCount": 2,
+        "offset": 0
+      }
+    },
+    {
+      "name": "get_lineage",
+      "arguments": {
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)",
+        "upstream": false,
+        "max_hops": 3,
+        "max_results": 100,
+        "offset": 0
+      },
+      "result": {
+        "downstreams": {
+          "searchResults": [
+            {
+              "degree": 1,
+              "entity": {
+                "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.ANALYTICS.CUSTOMER_360,PROD)",
+                "type": "DATASET",
+                "name": "customer_360",
+                "ownership": {
+                  "owners": [
+                    {
+                      "owner": {
+                        "name": "Analytics Platform"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "degree": 2,
+              "entity": {
+                "urn": "urn:li:dashboard:(looker,executive-retention)",
+                "type": "DASHBOARD",
+                "name": "Executive Retention",
+                "ownership": {
+                  "owners": [
+                    {
+                      "owner": {
+                        "name": "Growth Analytics"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "degree": 2,
+              "entity": {
+                "urn": "urn:li:mlModel:(urn:li:dataPlatform:mlflow,churn-propensity,PROD)",
+                "type": "MLMODEL",
+                "name": "churn_propensity",
+                "ownership": {
+                  "owners": [
+                    {
+                      "owner": {
+                        "name": "Lifecycle ML"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "degree": 3,
+              "entity": {
+                "urn": "urn:li:dataset:(urn:li:dataPlatform:braze,PROD.ACTIVATIONS.REENGAGEMENT,PROD)",
+                "type": "DATASET",
+                "name": "reengagement_activation",
+                "ownership": {
+                  "owners": [
+                    {
+                      "owner": {
+                        "name": "Lifecycle Marketing"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "returned": 4,
+          "hasMore": false
+        }
+      }
+    }
+  ],
+  "context": {
+    "search": {
+      "start": 0,
+      "count": 1,
+      "total": 1,
+      "searchResults": [
+        {
+          "entity": {
+            "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)",
+            "type": "DATASET",
+            "name": "customers",
+            "platform": "snowflake"
+          }
+        }
+      ]
+    },
+    "entity": [
+      {
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)",
+        "type": "DATASET",
+        "name": "customers",
+        "description": "Canonical customer identity and contact profile.",
+        "ownership": {
+          "owners": [
+            {
+              "owner": {
+                "urn": "urn:li:corpGroup:customer-platform",
+                "name": "Customer Platform"
+              }
+            }
+          ]
+        },
+        "globalTags": {
+          "tags": [
+            {
+              "tag": {
+                "urn": "urn:li:tag:PII",
+                "properties": {
+                  "name": "PII"
+                }
+              }
+            },
+            {
+              "tag": {
+                "urn": "urn:li:tag:Tier1",
+                "properties": {
+                  "name": "Tier1"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "schema": {
+      "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)",
+      "fields": [
+        {
+          "fieldPath": "customer_id",
+          "nativeDataType": "VARCHAR",
+          "description": "Stable customer identifier."
+        },
+        {
+          "fieldPath": "email",
+          "nativeDataType": "VARCHAR",
+          "description": "Plaintext contact email classified as PII."
+        },
+        {
+          "fieldPath": "email_sha256",
+          "nativeDataType": "VARCHAR",
+          "description": "Normalized SHA-256 compatibility field."
+        }
+      ],
+      "totalFields": 14,
+      "returned": 3,
+      "remainingCount": 11,
+      "matchingCount": 2,
+      "offset": 0
+    },
+    "downstreamLineage": {
+      "downstreams": {
+        "searchResults": [
+          {
+            "degree": 1,
+            "entity": {
+              "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.ANALYTICS.CUSTOMER_360,PROD)",
+              "type": "DATASET",
+              "name": "customer_360",
+              "ownership": {
+                "owners": [
+                  {
+                    "owner": {
+                      "name": "Analytics Platform"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "degree": 2,
+            "entity": {
+              "urn": "urn:li:dashboard:(looker,executive-retention)",
+              "type": "DASHBOARD",
+              "name": "Executive Retention",
+              "ownership": {
+                "owners": [
+                  {
+                    "owner": {
+                      "name": "Growth Analytics"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "degree": 2,
+            "entity": {
+              "urn": "urn:li:mlModel:(urn:li:dataPlatform:mlflow,churn-propensity,PROD)",
+              "type": "MLMODEL",
+              "name": "churn_propensity",
+              "ownership": {
+                "owners": [
+                  {
+                    "owner": {
+                      "name": "Lifecycle ML"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "degree": 3,
+            "entity": {
+              "urn": "urn:li:dataset:(urn:li:dataPlatform:braze,PROD.ACTIVATIONS.REENGAGEMENT,PROD)",
+              "type": "DATASET",
+              "name": "reengagement_activation",
+              "ownership": {
+                "owners": [
+                  {
+                    "owner": {
+                      "name": "Lifecycle Marketing"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "returned": 4,
+        "hasMore": false
+      }
+    }
+  }
+}

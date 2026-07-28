@@ -1133,6 +1133,12 @@ a {
   margin: 0;
 }
 
+.architecture-context {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
 .architecture-flow {
   align-items: center;
   display: grid;
@@ -1169,6 +1175,13 @@ a {
 
 .architecture-flow i {
   font-style: normal;
+}
+
+.mcp-trace-link {
+  align-self: flex-start;
+  font-family: "Courier New", monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
 }
 
 .benchmark-proof {

@@ -1,0 +1,165 @@
+{
+  "server": "fixture://datahub-mcp",
+  "tools": [
+    "search",
+    "get_entities",
+    "list_schema_fields",
+    "get_lineage"
+  ],
+  "responses": {
+    "search": {
+      "start": 0,
+      "count": 1,
+      "total": 1,
+      "searchResults": [
+        {
+          "entity": {
+            "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)",
+            "type": "DATASET",
+            "name": "customers",
+            "platform": "snowflake"
+          }
+        }
+      ]
+    },
+    "get_entities": [
+      {
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)",
+        "type": "DATASET",
+        "name": "customers",
+        "description": "Canonical customer identity and contact profile.",
+        "ownership": {
+          "owners": [
+            {
+              "owner": {
+                "urn": "urn:li:corpGroup:customer-platform",
+                "name": "Customer Platform"
+              }
+            }
+          ]
+        },
+        "globalTags": {
+          "tags": [
+            {
+              "tag": {
+                "urn": "urn:li:tag:PII",
+                "properties": {
+                  "name": "PII"
+                }
+              }
+            },
+            {
+              "tag": {
+                "urn": "urn:li:tag:Tier1",
+                "properties": {
+                  "name": "Tier1"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "list_schema_fields": {
+      "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.CRM.CUSTOMERS,PROD)",
+      "fields": [
+        {
+          "fieldPath": "customer_id",
+          "nativeDataType": "VARCHAR",
+          "description": "Stable customer identifier."
+        },
+        {
+          "fieldPath": "email",
+          "nativeDataType": "VARCHAR",
+          "description": "Plaintext contact email classified as PII."
+        },
+        {
+          "fieldPath": "email_sha256",
+          "nativeDataType": "VARCHAR",
+          "description": "Normalized SHA-256 compatibility field."
+        }
+      ],
+      "totalFields": 14,
+      "returned": 3,
+      "remainingCount": 11,
+      "matchingCount": 2,
+      "offset": 0
+    },
+    "get_lineage": {
+      "downstreams": {
+        "searchResults": [
+          {
+            "degree": 1,
+            "entity": {
+              "urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,PROD.ANALYTICS.CUSTOMER_360,PROD)",
+              "type": "DATASET",
+              "name": "customer_360",
+              "ownership": {
+                "owners": [
+                  {
+                    "owner": {
+                      "name": "Analytics Platform"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "degree": 2,
+            "entity": {
+              "urn": "urn:li:dashboard:(looker,executive-retention)",
+              "type": "DASHBOARD",
+              "name": "Executive Retention",
+              "ownership": {
+                "owners": [
+                  {
+                    "owner": {
+                      "name": "Growth Analytics"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "degree": 2,
+            "entity": {
+              "urn": "urn:li:mlModel:(urn:li:dataPlatform:mlflow,churn-propensity,PROD)",
+              "type": "MLMODEL",
+              "name": "churn_propensity",
+              "ownership": {
+                "owners": [
+                  {
+                    "owner": {
+                      "name": "Lifecycle ML"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "degree": 3,
+            "entity": {
+              "urn": "urn:li:dataset:(urn:li:dataPlatform:braze,PROD.ACTIVATIONS.REENGAGEMENT,PROD)",
+              "type": "DATASET",
+              "name": "reengagement_activation",
+              "ownership": {
+                "owners": [
+                  {
+                    "owner": {
+                      "name": "Lifecycle Marketing"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "returned": 4,
+        "hasMore": false
+      }
+    }
+  }
+}

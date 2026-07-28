@@ -90,7 +90,7 @@ export default function Home() {
         </a>
         <div className="topbar-center">
           <span className="connection-dot" />
-          DataHub snapshot · 10 assets · just now
+          DataHub MCP · 4 read-only tools · context ready
         </div>
         <div className="topbar-actions">
           <a
@@ -153,8 +153,8 @@ export default function Home() {
             <h2>One change. Every consequence.</h2>
           </div>
           <p>
-            Choose a pull request. The agent traverses DataHub’s metadata graph
-            and turns context into an executable plan.
+            Choose a pull request. The agent calls DataHub MCP, traverses the
+            metadata graph, and turns context into an executable plan.
           </p>
         </div>
 
@@ -369,24 +369,34 @@ export default function Home() {
             <br />
             LineageShield makes it actionable.
           </h2>
-          <div className="architecture-flow">
-            <div>
-              <span>01</span>
-              <b>Snapshot</b>
-              <small>DataHub SDK exports lineage + aspects</small>
+          <div className="architecture-context">
+            <div className="architecture-flow">
+              <div>
+                <span>01</span>
+                <b>MCP Context</b>
+                <small>search + entities + schema + lineage</small>
+              </div>
+              <i>→</i>
+              <div>
+                <span>02</span>
+                <b>Traverse</b>
+                <small>Typed adjacency index maps blast radius</small>
+              </div>
+              <i>→</i>
+              <div>
+                <span>03</span>
+                <b>Act</b>
+                <small>Agent generates checks, owners, and SQL</small>
+              </div>
             </div>
-            <i>→</i>
-            <div>
-              <span>02</span>
-              <b>Traverse</b>
-              <small>Typed adjacency index maps blast radius</small>
-            </div>
-            <i>→</i>
-            <div>
-              <span>03</span>
-              <b>Act</b>
-              <small>Agent generates checks, owners, and SQL</small>
-            </div>
+            <a
+              className="text-link mcp-trace-link"
+              href="https://github.com/nexicturbo/lineageshield/blob/main/examples/mcp/lineageshield-mcp-context.json"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Inspect the reproducible DataHub MCP trace →
+            </a>
           </div>
         </div>
         <a
