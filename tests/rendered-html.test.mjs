@@ -31,6 +31,9 @@ test("server-renders the LineageShield product", async () => {
   assert.match(html, /<title>LineageShield/);
   assert.match(html, /Ship schema changes/);
   assert.match(html, /DataHub MCP/);
+  assert.match(html, /recorded context ready/);
+  assert.match(html, /recorded four-call/);
+  assert.doesNotMatch(html, /live sample/);
   assert.match(html, /Analyze change/);
   assert.match(html, /Safe rollout plan/i);
   assert.match(html, /examples\/mcp\/lineageshield-mcp-context\.json/);

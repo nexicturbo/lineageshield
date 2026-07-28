@@ -90,7 +90,7 @@ export default function Home() {
         </a>
         <div className="topbar-center">
           <span className="connection-dot" />
-          DataHub MCP · 4 read-only tools · context ready
+          DataHub MCP · 4 read-only tools · recorded context ready
         </div>
         <div className="topbar-actions">
           <a
@@ -127,7 +127,7 @@ export default function Home() {
               Inspect a change <span>↓</span>
             </a>
             <span className="hero-note">
-              <b>10</b> DataHub assets in this live sample
+              <b>10</b> DataHub assets in this recorded sample
             </span>
           </div>
         </div>
@@ -153,8 +153,9 @@ export default function Home() {
             <h2>One change. Every consequence.</h2>
           </div>
           <p>
-            Choose a pull request. The agent calls DataHub MCP, traverses the
-            metadata graph, and turns context into an executable plan.
+            Choose a pull request. The public demo replays a recorded four-call
+            DataHub MCP trace, traverses the metadata graph, and turns that
+            context into an executable plan.
           </p>
         </div>
 
